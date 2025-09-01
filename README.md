@@ -66,16 +66,16 @@ Server runs on http://localhost:3000
 
 ## Code structure
 
-src/
-├─ index.js            # Starts the server
-├─ app.js              # Express app and route setup
-├─ routes/             # API endpoints
-│  ├─ preferences.js
-│  └─ events.js
-├─ controllers/        # Business logic per endpoint
-│  ├─ preferencesController.js
-│  └─ eventsController.js
-└─ helpers.js          # Time/DND calculation
+      src/
+      ├─ index.js            # Starts the server
+      ├─ app.js              # Express app and route setup
+      ├─ routes/             # API endpoints
+      │  ├─ preferences.js
+      │  └─ events.js
+      ├─ controllers/        # Business logic per endpoint
+      │  ├─ preferencesController.js
+      │  └─ eventsController.js
+      └─ helpers.js          # Time/DND calculation
 
 ## API Endpoints
 
