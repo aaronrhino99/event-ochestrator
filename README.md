@@ -16,14 +16,14 @@ A simple **Node.js** application that decides whether to send notifications base
 
 ### Installation
 
-git clone https://github.com/your-username/event-orchestrator.git
+          git clone https://github.com/your-username/event-orchestrator.git
 
-cd event-orchestrator
-npm install
+          cd event-orchestrator
+          npm install
 
 ## Run the Server
-npm start
-Server runs on http://localhost:3000
+      npm start
+      Server runs on http://localhost:3000
 
 
 ## How It Works 
