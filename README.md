@@ -1,155 +1,95 @@
 # Event Orchestrator
 
-Smart notification filtering service that respects user preferences and "Do Not Disturb" schedules.
+A simple **Node.js** application that decides whether to send notifications based on user preferences and **Do Not Disturb (DND)** schedules.
 
-## 🚀 Quick Start
+## 🚀 Features
+- Save and fetch user preferences
+- Define quiet hours with DND
+- Decide notifications per event type
+- Lightweight REST API with Express
 
-```bash
-# Install and run
+## 📦 Setup
+
+### Prerequisites
+- Node.js v14+
+- npm
+
+### Installation
+
+git clone https://github.com/your-username/event-orchestrator.git
+
+cd event-orchestrator
 npm install
+
+## Run the Server
 npm start
+Server runs on http://localhost:3000
 
-# Verify
-curl http://localhost:3000/health
-```
 
-## 📋 Evaluation Criteria
+# How It Works 
 
-### ✅ **Correctness**
+       ┌──────────────┐
+       │    Client    │
+       │ (curl/Postman│
+       └──────┬───────┘
+              │
+              ▼
+       ┌──────────────┐
+       │   Express    │
+       │   (app.js)   │
+       └──────┬───────┘
+              │
+   ┌──────────┴───────────┐
+   ▼                      ▼
+preferences route     events route
+   │                      │
+   ▼                      ▼
+preferencesCtrl     eventsCtrl
+   │                      │
+   ▼                      ▼
+  store (memory)    helpers (DND logic)
 
-**DND Midnight Crossover Logic:**
-```javascript
-function isWithinDnd(timestamp, start, end) {
-  const t = minutesToday(timestamp);
-  const s = timeToMinutes(start);
-  const e = timeToMinutes(end);
-  
-  return s < e ? (t >= s && t < e) : (t >= s || t < e);
-}
-```
 
-**Example: DND 22:00-08:00**
-- `23:30 (1410min)`: `1410 >= 1320 || 1410 < 480` → `true` → **BLOCKED** ✅
-- `02:00 (120min)`: `120 >= 1320 || 120 < 480` → `true` → **BLOCKED** ✅  
-- `10:00 (600min)`: `600 >= 1320 || 600 < 480` → `false` → **ALLOWED** ✅
+**Code structure
 
-### ✅ **Code Clarity**
+src/
+├─ index.js            # Starts the server
+├─ app.js              # Express app and route setup
+├─ routes/             # API endpoints
+│  ├─ preferences.js
+│  └─ events.js
+├─ controllers/        # Business logic per endpoint
+│  ├─ preferencesController.js
+│  └─ eventsController.js
+└─ helpers.js          # Time/DND calculation
 
-**Clean Architecture:**
-```
-├── index.js           # Server entry
-├── app.js            # Express setup
-├── helpers.js        # Time utilities  
-├── controllers/      # Business logic
-└── routes/          # HTTP routing
-```
+## API Endpoints
 
-**Design Principles:**
-- Single responsibility per module
-- Descriptive naming (`isWithinDnd`, `handleEvent`)
-- Early exit pattern for performance
-- Fail-safe defaults (unknown users → allow)
+GET /preferences/:userId → Get preferences
+POST /preferences/:userId → Save preferences
 
-### ✅ **Problem-Solving**
 
-**Key Algorithms:**
-- **Time Comparison**: Convert to minutes for mathematical operations
-- **User Lookup**: Hash table for O(1) access
-- **Decision Tree**: Sequential validation with early exits
-
-**Trade-offs:**
-- In-memory store: Fast but not persistent (good for MVP)
-- Synchronous processing: Simple but not async-scalable
-- UTC timestamps: Consistent but timezone-agnostic
-
-### ✅ **API Design**
-
-## 📡 API Endpoints
-
-### `POST /events` - Process Event
-**Purpose**: Get filtering decision for a notification
-
-**Request:**
-```json
 {
-  "eventId": "evt_123",
-  "userId": "john_doe", 
-  "eventType": "email",
-  "timestamp": "2025-01-15T23:30:00Z"
+  "dnd": { "start": "22:00", "end": "07:00" },
+  "eventSettings": { "item_shipped": { "enabled": true } }
 }
-```
 
-**Responses:**
-```json
-{"decision": "PROCESS_NOTIFICATION"}
-{"decision": "DO_NOT_NOTIFY", "reason": "DND_ACTIVE"}  
-{"decision": "DO_NOT_NOTIFY", "reason": "USER_UNSUBSCRIBED"}
-{"message": "Missing fields"} // 400 error
-```
+## Events
 
-### `GET /preferences/:userId` - Get User Preferences
-**Response:**
-```json
 {
-  "dnd": {"start": "22:00", "end": "08:00"},
-  "eventSettings": {
-    "email": {"enabled": true},
-    "push": {"enabled": false}
-  }
+  "eventId": "evt_1",
+  "userId": "u1",
+  "eventType": "item_shipped",
+  "timestamp": "2025-08-30T23:30:00Z"
 }
-```
 
-### `POST /preferences/:userId` - Save Preferences  
-**Request:**
-```json
-{
-  "dnd": {"start": "22:00", "end": "08:00"},
-  "eventSettings": {"email": {"enabled": true}}
-}
-```
+{ "decision": "PROCESS_NOTIFICATION" }
 
-**Design Rationale:**
-- RESTful resource mapping
-- Clear request/response contracts
-- Consistent error handling
-- Fail-safe defaults
+{ "decision": "DO_NOT_NOTIFY", "reason": "DND_ACTIVE" }
 
-## 🧪 Testing
 
-**Test DND Logic:**
-```bash
-# Set overnight DND
-curl -X POST localhost:3000/preferences/test \
-  -H "Content-Type: application/json" \
-  -d '{"dnd":{"start":"22:00","end":"08:00"},"eventSettings":{"email":{"enabled":true}}}'
 
-# Test at 1:30 AM (should block)
-curl -X POST localhost:3000/events \
-  -d '{"eventId":"1","userId":"test","eventType":"email","timestamp":"2025-01-15T01:30:00Z"}'
-```
 
-## 🔧 Technical Details
 
-**Performance:** O(1) event processing, sub-ms response times  
-**Storage:** In-memory hash table (~100 bytes/user)  
-**Dependencies:** Express.js only  
-**Architecture:** Layered with shared state between controllers
 
-## 🚀 Production Ready
 
-Replace in-memory store:
-```javascript
-// Current
-const store = {};
-
-// Production  
-const store = new RedisClient();
-```
-
----
-
-**Key Features:**
-- ✅ Handles midnight crossover DND periods correctly
-- ✅ Clean, testable architecture with separation of concerns  
-- ✅ Efficient O(1) algorithms for all operations
-- ✅ RESTful API design with clear contracts
