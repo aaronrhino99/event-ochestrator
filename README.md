@@ -39,21 +39,21 @@ A simple **Node.js** application that decides whether to send notifications base
               │   (app.js)   │
               └──────┬───────┘
                      |  
-          ┌──────────┴───────────┐
-          │                      │
-          ▼                      ▼
-    ┌─────────────┐      ┌─────────────┐
-    │ preferences │      │   events    │
-    │   routes    │      │   routes    │
-    └──────┬──────┘      └──────┬──────┘
-           │                    │
-           ▼                    ▼
-    ┌─────────────────┐    ┌───────────────────┐
-    │ PreferencesCtrl │    │   EventsCtrl      │
-    │ (get/save prefs)│    │ (decide notify?)  │
-    └─────────┬────────┘    └─────────┬────────┘
-              │                       │
-              ▼                       ▼
+          ┌──────────┴───────────  ┐
+          │                        │
+          ▼                        ▼
+     ┌─────────────┐         ┌─────────────┐
+     │ preferences │         │   events    │
+     │   routes    │         │   routes    │
+     └──────┬──────┘         └──────┬──────┘
+            │                       │
+            ▼                       ▼
+    ┌─────────────────┐    ┌──────────────────┐
+    │ PreferencesCtrl │    │   EventsCtrl     │
+    │ (get/save prefs)│    │ (decide notify?) │
+    └─────────┬───────┘    └─────────┬────────┘
+              │                      │
+              ▼                      ▼
        ┌─────────────┐        ┌─────────────┐
        │  store obj  │        │ helpers.js  │
        │ { userId:…} │        │ DND logic   │
