@@ -79,27 +79,27 @@ A simple **Node.js** application that decides whether to send notifications base
 
 ## API Endpoints
 
-GET /preferences/:userId → Get preferences
-POST /preferences/:userId → Save preferences
+          GET /preferences/:userId → Get preferences
+          POST /preferences/:userId → Save preferences
 
 
-{
-  "dnd": { "start": "22:00", "end": "07:00" },
-  "eventSettings": { "item_shipped": { "enabled": true } }
-}
+          {
+            "dnd": { "start": "22:00", "end": "07:00" },
+            "eventSettings": { "item_shipped": { "enabled": true } }
+          }
 
 ## Events
 
-{
-  "eventId": "evt_1",
-  "userId": "u1",
-  "eventType": "item_shipped",
-  "timestamp": "2025-08-30T23:30:00Z"
-}
+          {
+            "eventId": "evt_1",
+            "userId": "u1",
+            "eventType": "item_shipped",
+            "timestamp": "2025-08-30T23:30:00Z"
+          }
 
-{ "decision": "PROCESS_NOTIFICATION" }
+          { "decision": "PROCESS_NOTIFICATION" }
 
-{ "decision": "DO_NOT_NOTIFY", "reason": "DND_ACTIVE" }
+          { "decision": "DO_NOT_NOTIFY", "reason": "DND_ACTIVE" }
 
 
 
