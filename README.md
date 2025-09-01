@@ -28,19 +28,20 @@ Server runs on http://localhost:3000
 
 ## How It Works 
 
-       ┌──────────────┐
-       │    Client    │
-       │ (e.g. curl)  │
-       └──────┬───────┘
-              │ HTTP request
-              ▼
-       ┌──────────────┐
-       │   Express    │
-       │   (app.js)   │
-       └──────┬───────┘
-              |  
-    ┌──────────┴───────────┐
-    │                      │
+              ┌──────────────┐
+              │    Client    │
+              │ (e.g. curl)  │
+              └──────┬───────┘
+                     │ HTTP request
+                     ▼
+              ┌──────────────┐
+              │   Express    │
+              │   (app.js)   │
+              └──────┬───────┘
+                     |  
+          ┌──────────┴───────────┐
+          │                      │
+          ▼                      ▼
     ┌─────────────┐      ┌─────────────┐
     │ preferences │      │   events    │
     │   routes    │      │   routes    │
