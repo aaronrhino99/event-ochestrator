@@ -65,7 +65,7 @@ Finally sends response back to client
 
 
 
-**Code structure
+## Code structure
 
 src/
 ├─ index.js            # Starts the server
