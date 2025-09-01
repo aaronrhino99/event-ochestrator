@@ -38,29 +38,27 @@ Server runs on http://localhost:3000
        │   Express    │
        │   (app.js)   │
        └──────┬───────┘
-       Routes decide where to send request
-              │
-   ┌──────────┴───────────┐
-   │                      │
-   ▼                      ▼
-┌─────────────┐      ┌─────────────┐
-│ preferences │      │   events    │
-│   routes    │      │   routes    │
-└──────┬──────┘      └──────┬──────┘
-       │                     │
-       ▼                     ▼
-┌─────────────────┐    ┌───────────────────┐
-│ PreferencesCtrl  │    │   EventsCtrl      │
-│ (get/save prefs) │    │ (decide notify?)  │
-└─────────┬────────┘    └─────────┬────────┘
-          │                       │
-          ▼                       ▼
-   ┌─────────────┐        ┌─────────────┐
-   │  store obj  │        │ helpers.js  │
-   │ { userId:…} │        │ DND logic   │
-   └─────────────┘        └─────────────┘
+              |  
+    ┌──────────┴───────────┐
+    │                      │
+    ┌─────────────┐      ┌─────────────┐
+    │ preferences │      │   events    │
+    │   routes    │      │   routes    │
+    └──────┬──────┘      └──────┬──────┘
+           │                    │
+           ▼                    ▼
+    ┌─────────────────┐    ┌───────────────────┐
+    │ PreferencesCtrl │    │   EventsCtrl      │
+    │ (get/save prefs)│    │ (decide notify?)  │
+    └─────────┬────────┘    └─────────┬────────┘
+              │                       │
+              ▼                       ▼
+       ┌─────────────┐        ┌─────────────┐
+       │  store obj  │        │ helpers.js  │
+       │ { userId:…} │        │ DND logic   │
+       └─────────────┘        └─────────────┘
 
-Finally sends response back to client
+      Finally sends response back to client
 
 
 
