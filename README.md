@@ -30,24 +30,39 @@ Server runs on http://localhost:3000
 
        ┌──────────────┐
        │    Client    │
-       │ (curl/Postman│
+       │ (e.g. curl)  │
        └──────┬───────┘
-              │
+              │ HTTP request
               ▼
        ┌──────────────┐
        │   Express    │
        │   (app.js)   │
        └──────┬───────┘
+       Routes decide where to send request
               │
    ┌──────────┴───────────┐
-   ▼                      ▼
-preferences route     events route
    │                      │
    ▼                      ▼
-preferencesCtrl     eventsCtrl
-   │                      │
-   ▼                      ▼
-  store (memory)    helpers (DND logic)
+┌─────────────┐      ┌─────────────┐
+│ preferences │      │   events    │
+│   routes    │      │   routes    │
+└──────┬──────┘      └──────┬──────┘
+       │                     │
+       ▼                     ▼
+┌─────────────────┐    ┌───────────────────┐
+│ PreferencesCtrl  │    │   EventsCtrl      │
+│ (get/save prefs) │    │ (decide notify?)  │
+└─────────┬────────┘    └─────────┬────────┘
+          │                       │
+          ▼                       ▼
+   ┌─────────────┐        ┌─────────────┐
+   │  store obj  │        │ helpers.js  │
+   │ { userId:…} │        │ DND logic   │
+   └─────────────┘        └─────────────┘
+
+Finally sends response back to client
+
+
 
 
 **Code structure
