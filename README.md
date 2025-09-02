@@ -22,7 +22,7 @@ A simple **Node.js** application that decides whether to send notifications base
           npm install
 
 ## Run the Server
-      npm start
+      node src/index.js
       Server runs on http://localhost:3000
 
 
@@ -101,9 +101,25 @@ A simple **Node.js** application that decides whether to send notifications base
 
           { "decision": "DO_NOT_NOTIFY", "reason": "DND_ACTIVE" }
 
+## Test with curl or Postman
 
+Save preferences:
 
+          curl -X POST http://localhost:3000/preferences/u1 \
+            -H "Content-Type: application/json" \
+            -d '{
+              "dnd": { "start": "22:00", "end": "07:00" },
+              "eventSettings": { "item_shipped": { "enabled": true } }
+            }'
+Send an event:
 
-
+          curl -X POST http://localhost:3000/events \
+            -H "Content-Type: application/json" \
+            -d '{
+              "eventId": "evt1",
+              "userId": "u1",
+              "eventType": "item_shipped",
+              "timestamp": "2025-08-30T23:30:00Z"
+            }'
 
 
